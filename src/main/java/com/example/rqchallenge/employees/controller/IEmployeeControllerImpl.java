@@ -28,7 +28,7 @@ public class IEmployeeControllerImpl implements IEmployeeController {
 
     @Override
     public ResponseEntity<List<Employee>> getEmployeesByNameSearch(String searchString) throws ServiceException {
-        return new ResponseEntity<>(fetchEmployeeDetailsService.search(searchString), HttpStatus.OK);
+        return new ResponseEntity<>(fetchEmployeeDetailsService.search(searchString.trim()), HttpStatus.OK);
     }
 
     @Override
