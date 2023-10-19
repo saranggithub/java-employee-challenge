@@ -2,6 +2,7 @@ package com.example.rqchallenge.employees.controller;
 
 import com.example.rqchallenge.employees.exception.ServiceException;
 import com.example.rqchallenge.employees.model.Employee;
+import com.example.rqchallenge.employees.service.EmployeeDefinitionService;
 import com.example.rqchallenge.employees.service.EmployeeSalaryService;
 import com.example.rqchallenge.employees.service.FetchEmployeeDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class IEmployeeControllerImpl implements IEmployeeController {
     private FetchEmployeeDetailsService fetchEmployeeDetailsService;
     @Autowired
     private EmployeeSalaryService employeeSalaryService;
+
+    @Autowired
+    private EmployeeDefinitionService employeeDefinitionService;
 
     @Override
     public ResponseEntity<List<Employee>> getAllEmployees() throws ServiceException {
@@ -48,8 +52,8 @@ public class IEmployeeControllerImpl implements IEmployeeController {
     }
 
     @Override
-    public ResponseEntity<Employee> createEmployee(Map<String, Object> employeeInput) {
-        return null;
+    public ResponseEntity<String> createEmployee(Map<String, Object> employeeInput) {
+        return new ResponseEntity<>(employeeDefinitionService.create(employeeInput), HttpStatus.CREATED);
     }
 
     @Override

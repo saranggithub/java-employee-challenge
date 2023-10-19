@@ -18,7 +18,7 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
-public class EmployeeServiceTest {
+public class FetchEmployeeDetailsServiceTest {
 
     private static final String SARANG = "Sarang";
     private static final String RAMESH = "Ramesh";
@@ -26,7 +26,7 @@ public class EmployeeServiceTest {
     private FetchEmployeeDetailsService fetchEmployeeDetailsService;
     @Mock
     private RestTemplate restTemplate;
-    private String url = "https://dummy.dummy.com";
+    private String url = "https://dummy.fetch.com";
     private String path = "/api/v1/employees";
     @BeforeEach
     void setUp() {

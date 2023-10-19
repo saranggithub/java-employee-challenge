@@ -27,46 +27,10 @@ public interface IEmployeeController {
     @GetMapping("/topTenHighestEarningEmployeeNames")
     ResponseEntity<List<String>> getTopTenHighestEarningEmployeeNames();
 
-    @PostMapping()
-    ResponseEntity<Employee> createEmployee(@RequestBody Map<String, Object> employeeInput);
+    @PostMapping("/create")
+    ResponseEntity<String> createEmployee(@RequestBody Map<String, Object> employeeInput);
 
     @DeleteMapping("/{id}")
     ResponseEntity<String> deleteEmployeeById(@PathVariable String id);
 
-    class IEmployeeControllerImpl implements IEmployeeController {
-        @Override
-        public ResponseEntity<List<Employee>> getAllEmployees() throws IOException {
-            return null;
-        }
-
-        @Override
-        public ResponseEntity<List<Employee>> getEmployeesByNameSearch(String searchString) {
-            return null;
-        }
-
-        @Override
-        public ResponseEntity<Employee> getEmployeeById(String id) {
-            return null;
-        }
-
-        @Override
-        public ResponseEntity<Integer> getHighestSalaryOfEmployees() {
-            return null;
-        }
-
-        @Override
-        public ResponseEntity<List<String>> getTopTenHighestEarningEmployeeNames() {
-            return null;
-        }
-
-        @Override
-        public ResponseEntity<Employee> createEmployee(Map<String, Object> employeeInput) {
-            return null;
-        }
-
-        @Override
-        public ResponseEntity<String> deleteEmployeeById(String id) {
-            return null;
-        }
-    }
 }
