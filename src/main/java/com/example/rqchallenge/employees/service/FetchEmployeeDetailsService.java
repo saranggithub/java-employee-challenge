@@ -24,23 +24,24 @@ public class FetchEmployeeDetailsService {
     private static final String RESPONSE_KEY = "data";
     private static final String EMPLOYEE_NOT_FOUND = "Employee not found";
     private final RestTemplate restTemplate;
-    private String url;
-    private Logger logger = LoggerFactory.getLogger(FetchEmployeeDetailsService.class);
+    private final String allEmployeePath;
+    private final String url;
+    private final Logger logger = LoggerFactory.getLogger(FetchEmployeeDetailsService.class);
+
     public FetchEmployeeDetailsService(@Autowired RestTemplate restTemplate,
-                                       @Value("${employees.portal}") final String url) {
+                                       @Value("${employees.portal}") final String url,
+                                       @Value("${all.employee.path}") final String allEmployeePath) {
         this.restTemplate = restTemplate;
         this.url = url;
+        this.allEmployeePath = allEmployeePath;
     }
 
     public Map<String, List<Employee>> getAllEmployees() throws ServiceException {
-        List<Employee> employeesFromResponse = new ArrayList<>();
-        Map<String, List<Employee>> employeesMapNameAsKey = new HashMap<>(1);
-        String path = "/api/v1/employees";
-        ObjectMapper mapper = new ObjectMapper();
         ResponseEntity<Object> employeeResponseEntity;
+        Map<String, List<Employee>> employeesMapNameAsKey;
 
         try {
-            employeeResponseEntity = restTemplate.getForEntity(url + path, Object.class);
+            employeeResponseEntity = restTemplate.getForEntity(url + allEmployeePath, Object.class);
         } catch (HttpClientErrorException exception) {
             logger.error("Exception in fetching response " + exception);
             throw new ServiceException(new CustomError(500, exception.getMessage(),
@@ -49,14 +50,22 @@ public class FetchEmployeeDetailsService {
 
         handleEmployeeNotFound(employeeResponseEntity);
         handleErrorneousResponses(employeeResponseEntity);
-        List<LinkedHashMap> employeesObjects = (List<LinkedHashMap>) ((LinkedHashMap<String, Object>) employeeResponseEntity.getBody()).get(RESPONSE_KEY);
+        List<LinkedHashMap> employeesObjects =
+                (List<LinkedHashMap>) ((LinkedHashMap<String, Object>) employeeResponseEntity.getBody()).get(RESPONSE_KEY);
 
+        employeesMapNameAsKey = getEmployeesMapWithNameAsKey(employeesObjects);
+
+        return employeesMapNameAsKey;
+    }
+
+    private Map<String, List<Employee>> getEmployeesMapWithNameAsKey(List<LinkedHashMap> employeesObjects) {
+        Map<String, List<Employee>> employeesMapNameAsKey = new HashMap<>(1);
+        ObjectMapper mapper = new ObjectMapper();
         if(!employeesObjects.isEmpty()) {
             employeesMapNameAsKey = employeesObjects.stream().map(emp -> mapper.convertValue(emp, Employee.class))
                     .collect(Collectors.groupingBy(Employee::getName,
                                 Collectors.mapping(Function.identity(), Collectors.toList())));
         }
-
         return employeesMapNameAsKey;
     }
 

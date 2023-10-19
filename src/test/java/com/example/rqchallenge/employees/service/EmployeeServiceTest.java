@@ -2,7 +2,6 @@ package com.example.rqchallenge.employees.service;
 
 import com.example.rqchallenge.employees.exception.ServiceException;
 import com.example.rqchallenge.employees.model.Employee;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,14 +27,15 @@ public class EmployeeServiceTest {
     @Mock
     private RestTemplate restTemplate;
     private String url = "https://dummy.dummy.com";
+    private String path = "/api/v1/employees";
     @BeforeEach
     void setUp() {
         ReflectionTestUtils.setField(fetchEmployeeDetailsService, "url", url);
+        ReflectionTestUtils.setField(fetchEmployeeDetailsService, "allEmployeePath", path);
     }
 
     @Test
     public void allEmployeesEmptyList() throws ServiceException {
-        String path = "/api/v1/employees";
         ResponseEntity<Object> stringResponseEntity = getObjectResponseEntity(Collections.emptyList());
 
         when(restTemplate.getForEntity(url + path, Object.class)).thenReturn(stringResponseEntity);
@@ -45,7 +45,6 @@ public class EmployeeServiceTest {
 
     @Test
     public void allEmployeesServerErrorResponse(){
-        String path = "/api/v1/employees";
         Map<String, Object> responseObj = new LinkedHashMap<>();
         ResponseEntity<Object> stringResponseEntity = new ResponseEntity<>(responseObj, HttpStatus.INTERNAL_SERVER_ERROR);
 
@@ -55,7 +54,6 @@ public class EmployeeServiceTest {
 
     @Test
     public void allEmployeesSuccessResponseWithEmployeeList() throws ServiceException {
-        String path = "/api/v1/employees";
         List<LinkedHashMap> employeesList = getEmployeesList(SARANG, RAMESH);
         ResponseEntity<Object> stringResponseEntity = getObjectResponseEntity(employeesList);;
 
@@ -65,7 +63,6 @@ public class EmployeeServiceTest {
 
     @Test
     public void searchByNameSuccessResponse() throws ServiceException {
-        String path = "/api/v1/employees";
         Employee employee1 = new Employee((short)1, SARANG,1001.22d, (short)35, "");
         List<LinkedHashMap> employeesList = getEmployeesList(SARANG, RAMESH);
         ResponseEntity<Object> stringResponseEntity = getObjectResponseEntity(employeesList);;
@@ -77,7 +74,6 @@ public class EmployeeServiceTest {
 
     @Test
     public void searchByNameSameNameEmployee() throws ServiceException {
-        String path = "/api/v1/employees";
         Employee employee1 = new Employee((short)1, SARANG,1001.22d, (short)35, "");
         List<LinkedHashMap> employeesList = getEmployeesList(SARANG, SARANG);
         ResponseEntity<Object> stringResponseEntity = getObjectResponseEntity(employeesList);;
@@ -108,8 +104,6 @@ public class EmployeeServiceTest {
     }
 
     private static ResponseEntity<Object> getObjectResponseEntity(List<LinkedHashMap> employees) {
-        ObjectMapper mapper = new ObjectMapper();
-//        List<LinkedHashMap> collect = employees.stream().map(emp -> mapper.convertValue(Employee.class, LinkedHashMap.class)).collect(Collectors.toList());
         Map<String, Object> responseObj = new LinkedHashMap<>();
         responseObj.put("status", "success");
         responseObj.put("data", employees);
