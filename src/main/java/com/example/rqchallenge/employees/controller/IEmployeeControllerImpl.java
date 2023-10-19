@@ -7,7 +7,6 @@ import com.example.rqchallenge.employees.service.FetchEmployeeDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -45,7 +44,7 @@ public class IEmployeeControllerImpl implements IEmployeeController {
 
     @Override
     public ResponseEntity<List<String>> getTopTenHighestEarningEmployeeNames() {
-        return null;
+        return new ResponseEntity<>(employeeSalaryService.getTop10HighestEarningEmployeeNames(), HttpStatus.OK);
     }
 
     @Override
