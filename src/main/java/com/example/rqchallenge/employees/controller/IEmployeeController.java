@@ -16,7 +16,7 @@ public interface IEmployeeController {
     ResponseEntity<List<Employee>> getAllEmployees() throws IOException, ServiceException;
 
     @GetMapping("/search/{searchString}")
-    ResponseEntity<List<Employee>> getEmployeesByNameSearch(@PathVariable String searchString);
+    ResponseEntity<List<Employee>> getEmployeesByNameSearch(@PathVariable String searchString) throws ServiceException;
 
     @GetMapping("/{id}")
     ResponseEntity<Employee> getEmployeeById(@PathVariable String id);

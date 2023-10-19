@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -28,8 +27,8 @@ public class IEmployeeControllerImpl implements IEmployeeController {
     }
 
     @Override
-    public ResponseEntity<List<Employee>> getEmployeesByNameSearch(String searchString) {
-        return null;
+    public ResponseEntity<List<Employee>> getEmployeesByNameSearch(String searchString) throws ServiceException {
+        return new ResponseEntity<>(fetchEmployeeDetailsService.search(searchString), HttpStatus.OK);
     }
 
     @Override
