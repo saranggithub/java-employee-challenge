@@ -2,9 +2,7 @@ package com.example.rqchallenge.employees.service;
 
 import com.example.rqchallenge.employees.exception.ServiceException;
 import com.example.rqchallenge.employees.model.Employee;
-import com.example.rqchallenge.employees.model.Employees;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +15,6 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
