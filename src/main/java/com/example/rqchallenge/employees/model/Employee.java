@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.io.Serializable;
+import java.util.Comparator;
 
 @Data
 @AllArgsConstructor
@@ -24,4 +24,11 @@ public class Employee {
     private short age;
     @JsonProperty("profile_image")
     private String profileImageUrl;
+    public static Comparator<Employee> SalaryComparator = new Comparator<Employee>() {
+        @Override
+        public int compare(Employee e1, Employee e2) {
+            return (int)(e2.getSalary() - e1.getSalary());
+        }
+    };
+
 }

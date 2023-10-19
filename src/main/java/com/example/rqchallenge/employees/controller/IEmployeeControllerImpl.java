@@ -2,6 +2,7 @@ package com.example.rqchallenge.employees.controller;
 
 import com.example.rqchallenge.employees.exception.ServiceException;
 import com.example.rqchallenge.employees.model.Employee;
+import com.example.rqchallenge.employees.service.EmployeeSalaryService;
 import com.example.rqchallenge.employees.service.FetchEmployeeDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,9 +18,10 @@ import java.util.stream.Collectors;
 public class IEmployeeControllerImpl implements IEmployeeController {
     @Autowired
     private FetchEmployeeDetailsService fetchEmployeeDetailsService;
+    @Autowired
+    private EmployeeSalaryService employeeSalaryService;
 
     @Override
-    @GetMapping("/search/all")
     public ResponseEntity<List<Employee>> getAllEmployees() throws ServiceException {
         List<Employee> values = fetchEmployeeDetailsService.getAllEmployees().values().stream()
                 .flatMap(List::stream).collect(Collectors.toList());
@@ -38,7 +40,7 @@ public class IEmployeeControllerImpl implements IEmployeeController {
 
     @Override
     public ResponseEntity<Integer> getHighestSalaryOfEmployees() {
-        return null;
+        return new ResponseEntity<>(employeeSalaryService.getHighestSalaryOfEmployees(), HttpStatus.OK);
     }
 
     @Override
